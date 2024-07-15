@@ -12,7 +12,7 @@ struct PicturesApp: App {
     var body: some Scene {
         WindowGroup {
            // ContentView()
-            PicturesView()
+            PicturesView(size: CGSize(width: 200, height: 200))
         }
     }
 }

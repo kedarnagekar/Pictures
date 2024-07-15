@@ -14,15 +14,7 @@ class PicturesViewModel: ObservableObject {
     
     init() {
         print("PicturesViewModel_initialised")
-        DispatchQueue.global(qos: .background).async {
-            API_Manager().getImagesDataFromInternet { isSuccess, apiData in
-                if isSuccess {
-                    DispatchQueue.main.async {
-                        self.internetImageDetails = apiData ?? []
-                    }
-                }
-            }
-        }
+        self.call_API()
 //        DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 3.0) {
 //            DispatchQueue.main.async {
 //                self.getStoredPictures()
@@ -37,5 +29,18 @@ class PicturesViewModel: ObservableObject {
             self.pictureDetails.append(pictureModel)
         }
         print("gotStoredPictures")
+    }
+    
+    func call_API() {
+        print("PageIndex = \(API_Constants.shared.pageIndex)")
+        DispatchQueue.global(qos: .background).async {
+            API_Manager().getImagesDataFromInternet { isSuccess, apiData in
+                if isSuccess {
+                    DispatchQueue.main.async {
+                        self.internetImageDetails.append(contentsOf: apiData ?? [])
+                    }
+                }
+            }
+        }
     }
 }

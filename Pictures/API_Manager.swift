@@ -12,7 +12,7 @@ struct API_Manager {
     public typealias ImageCompletionData = (Bool, [Picture_API_Model]?) -> Void
     
     func getImagesDataFromInternet(completion: @escaping ImageCompletionData) {
-        guard let images_API_URL = URL(string: "https://picsum.photos/v2/list?page=0&limit=20") else { return }
+        guard let images_API_URL = URL(string: "https://picsum.photos/v2/list?page=\(API_Constants.shared.pageIndex)&limit=20") else { return }
         var urlReq = URLRequest(url: images_API_URL)
         urlReq.httpMethod = "GET"
         let task = URLSession.shared.dataTask(with: urlReq) { data, response, error in
