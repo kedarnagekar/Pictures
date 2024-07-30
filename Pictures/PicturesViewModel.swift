@@ -14,7 +14,7 @@ class PicturesViewModel: ObservableObject {
     
     init() {
         print("PicturesViewModel_initialised")
-        self.call_API()
+        self.call_API_2()
 //        DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 3.0) {
 //            DispatchQueue.main.async {
 //                self.getStoredPictures()
@@ -42,5 +42,16 @@ class PicturesViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    func call_API_2() {
+        Task {
+           let imageResult = await API_Manager().getImagesFrom_Internet()
+            print("received_image_result")
+            DispatchQueue.main.async {
+                self.internetImageDetails.append(contentsOf: imageResult)
+            }
+        }
+        print("call_made_to_get_image_result")
     }
 }

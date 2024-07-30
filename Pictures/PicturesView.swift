@@ -47,7 +47,7 @@ struct PicturesView: View {
                     if picture.id == viewModel.internetImageDetails.last?.id {
                         print("Last_item_scrolled")
                         API_Constants.shared.pageIndex += 1
-                        self.viewModel.call_API()
+                        self.viewModel.call_API_2()
                     } else {
                         print("Last_item_not_scrolled")
                     }

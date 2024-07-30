@@ -15,7 +15,7 @@ struct API_Manager {
         guard let images_API_URL = URL(string: "https://picsum.photos/v2/list?page=\(API_Constants.shared.pageIndex)&limit=20") else { return }
         var urlReq = URLRequest(url: images_API_URL)
         urlReq.httpMethod = "GET"
-        let task = URLSession.shared.dataTask(with: urlReq) { data, response, error in
+        let _ = URLSession.shared.dataTask(with: urlReq) { data, response, error in
             print("response = \(response)")
             print("error = \(error)")
             print("data = \(data)")
@@ -39,5 +39,24 @@ struct API_Manager {
                 print("Failed to retrieve data")
             }
         }.resume()
+    }
+    
+    func getImagesFrom_Internet() async -> [Picture_API_Model] {
+        guard let images_API_URL = URL(string: "https://picsum.photos/v2/list?page=\(API_Constants.shared.pageIndex)&limit=20") else { return [] }
+        var urlReq = URLRequest(url: images_API_URL)
+        urlReq.httpMethod = "GET"
+        do {
+            let task = try await URLSession.shared.data(for: urlReq)
+            let receivedData = try JSONDecoder().decode([Picture_API_Model].self, from: task.0)
+            print("receivedData_count = \(receivedData.count)")
+            for imageURLIndex in 0..<receivedData.count {
+                let imageURL = receivedData[imageURLIndex].download_url
+                print("\(imageURLIndex + 1) download_url = \(imageURL)")
+            }
+            return receivedData
+            
+        } catch {
+            return []
+        }
     }
 }
